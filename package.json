@@ -1,5 +1,6 @@
 {
   "name": "watch",
+  "homepage": "https://github.com/wxoox2000/Watch-movie-web-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
