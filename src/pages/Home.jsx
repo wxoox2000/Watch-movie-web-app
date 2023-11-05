@@ -20,7 +20,7 @@ import {
 } from "../Components/FramerMotionVariants/Variants";
 import { Icon } from "./Icon";
 
-export const Home = () => {
+const Home = () => {
   const [rec, setRec] = useState({});
   const [error, setError] = useState(false);
   const [url, setUrl] = useState("");
@@ -52,7 +52,7 @@ export const Home = () => {
   const urlBg = `https://image.tmdb.org/t/p/original/${rec?.poster_path}`;
   return (
     <div className="w-full h-full bg-black">
-              <Icon />
+      <Icon />
       <motion.div
         className="relative w-full px-6 py-10 bg-bgIcon bg-center"
         style={{
@@ -69,12 +69,11 @@ export const Home = () => {
         <div className="bg-gradient-to-b from-black to-transparent absolute w-full h-full top-0 left-0 opacity-20 pointer-events-none" />
         <div className="mt-40 pb-3 backdrop-blur-sm w-fit rounded-xl px-2">
           <h1 className="text-5xl font-semibold text-white">
-            {rec.original_title}
+            {Object.keys(rec).length !== 0 ? rec.original_title : ""}
           </h1>
-          <p className="text-[14px] font-normal leading-5 text-white mt-5 mb-9">{`${rec.release_date?.slice(
-            0,
-            4
-          )} | ${genres}`}</p>
+          <p className="text-[14px] font-normal leading-5 text-white mt-5 mb-9">{`${
+            Object.keys(rec).length !== 0 ? rec.release_date?.slice(0, 4) : ""
+          } | ${genres ? genres : ""}`}</p>
           <div className="flex items-center">
             <a
               href={url}
@@ -87,6 +86,11 @@ export const Home = () => {
             <LikeBtn M_Id={rec.id} type="movie" variant="m" />
           </div>
         </div>
+        {error ? (
+          <p className="text-white font-semibold text-2xl leading-normal mb-4 text-center">
+            Something went wrong, try reload the page...
+          </p>
+        ) : null}
       </motion.div>
       <motion.div
         className="pt-[6px] px-8"
@@ -119,3 +123,5 @@ export const Home = () => {
     </div>
   );
 };
+
+export default Home;

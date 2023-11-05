@@ -14,8 +14,9 @@ import {
   listVariants,
 } from "../Components/FramerMotionVariants/Variants";
 
-export const Movies = () => {
+const Movies = () => {
   const [results, setResults] = useState([]);
+  const [error, setError] = useState(false);
   const modalData = useSelector(selectModalData);
   const pageRef = useRef(1);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -58,7 +59,7 @@ export const Movies = () => {
         console.log(resp);
         setResults(resp);
       } catch (error) {
-        console.log(error);
+        setError(true);
       }
     };
     fetchTrend();
@@ -104,6 +105,11 @@ export const Movies = () => {
             })}
           </motion.ul>
         ) : null}
+        {error ? (
+          <p className="text-white font-semibold text-2xl leading-normal mb-4 text-center">
+            Something went wrong, try reload the page...
+          </p>
+        ) : null}
         {showLoadMore && (
           <button
             onClick={onClick}
@@ -116,3 +122,5 @@ export const Movies = () => {
     </div>
   );
 };
+
+export default Movies;

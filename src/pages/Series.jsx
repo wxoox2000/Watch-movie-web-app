@@ -14,8 +14,9 @@ import {
   listVariants,
 } from "../Components/FramerMotionVariants/Variants";
 
-export const Series = () => {
+const Series = () => {
   const [results, setResults] = useState([]);
+  const [error, setError] = useState(false);
   const modalData = useSelector(selectModalData);
   const pageRef = useRef(1);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -57,7 +58,7 @@ export const Series = () => {
         console.log(resp);
         setResults(resp);
       } catch (error) {
-        console.log(error);
+        setError(true);
       }
     };
     fetchSeries();
@@ -102,6 +103,11 @@ export const Series = () => {
             })}
           </motion.ul>
         ) : null}
+        {error ? (
+          <p className="text-white font-semibold text-2xl leading-normal mb-4 text-center">
+            Something went wrong, try reload the page...
+          </p>
+        ) : null}
         {showLoadMore && (
           <button
             onClick={onClick}
@@ -114,3 +120,4 @@ export const Series = () => {
     </div>
   );
 };
+export default Series;

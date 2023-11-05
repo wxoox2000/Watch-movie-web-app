@@ -19,8 +19,9 @@ import {
   mainVariants,
 } from "../Components/FramerMotionVariants/Variants";
 
-export const Search = () => {
+const Search = () => {
   const [query, setQuery] = useState("");
+  const [error, setError] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [results, setResults] = useState({});
   const URLquery = searchParams.get("query");
@@ -66,7 +67,7 @@ export const Search = () => {
   };
   const onClickPrev = () => {
     pageRef.current -= 1;
-    setSearchParams({query: URLquery, page: pageRef.current });
+    setSearchParams({ query: URLquery, page: pageRef.current });
     const fetch = async () => {
       const res = await fetchTrendingMovies(pageRef.current);
       console.log(res);
@@ -80,9 +81,12 @@ export const Search = () => {
       return;
     }
     const fetch = async () => {
-      const res = await userSearch(query, pageRef.current);
-      console.log(res);
-      setResults(res);
+      try {
+        const res = await userSearch(query, pageRef.current);
+        setResults(res);
+      } catch (error) {
+        setError(true);
+      }
     };
     fetch();
     window.scrollBy({
@@ -92,9 +96,17 @@ export const Search = () => {
     });
   }, [query]);
 
+  useEffect(() => {
+    window.scrollBy({
+      top: -400,
+      left: 0,
+      behavior: "smooth",
+    });
+  }, []);
+
   return (
     <div className={` w-full h-[100vh] bg-black}`}>
-      <motion.div className={`w-full min-h-full bg-black pb-10`}>
+      <div className={`w-full min-h-full bg-black pb-10`}>
         {modalData.openMovie &&
           createPortal(
             <BackdropModal>
@@ -163,6 +175,11 @@ export const Search = () => {
             })}
           </motion.ul>
         ) : null}
+        {error ? (
+          <p className="text-white font-semibold text-2xl leading-normal mb-4 text-center">
+            Something went wrong, try reload the page...
+          </p>
+        ) : null}
         {showLoadMore && (
           <button
             onClick={onClick}
@@ -171,7 +188,9 @@ export const Search = () => {
             Load more
           </button>
         )}
-      </motion.div>
+      </div>
     </div>
   );
 };
+
+export default Search;

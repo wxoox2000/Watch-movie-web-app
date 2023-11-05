@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 export const Documentaries = () => {
   const [doc, setDoc] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [error, setError] = useState(false);
   const [id, setId] = useState(null);
   const modalRef = useRef();
 
@@ -45,7 +46,7 @@ export const Documentaries = () => {
         const resp = await fetchDocs();
         setDoc(resp);
       } catch (error) {
-        console.log(error);
+        setError(true);
       }
     };
     fetchTopF();
@@ -75,13 +76,23 @@ export const Documentaries = () => {
           }
         })}
         <SwiperSlide>
-          <Link to="documentaries" className="w-64 h-[301px] shrink-0 block hover:shadow-xlInn px-5 py-8 rounded-2xl border border-gray hover:shadow-shadowColor trans">
+          <Link
+            to="documentaries"
+            className="w-64 h-[301px] shrink-0 block hover:shadow-xlInn px-5 py-8 rounded-2xl border border-gray hover:shadow-shadowColor trans"
+          >
             <BsCameraReels className="mx-auto drop-shadow-2xl fill-purple w-20 h-20 mb-20" />
             <p className="text-white font-semibold text-3xl leading-normal mb-4 text-center">
               See more...
             </p>
           </Link>
         </SwiperSlide>
+        {error ? (
+          <SwiperSlide>
+            <p className="text-white font-semibold text-2xl leading-normal mb-4 text-center mt-24">
+              Something went wrong, try reload the page...
+            </p>
+          </SwiperSlide>
+        ) : null}
         <SlideNextButton ref={DocsNavRef} />
         <SlidePrevButton ref={DocsNavRef} />
       </Swiper>

@@ -11,8 +11,9 @@ import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { exit, listVariants } from "../Components/FramerMotionVariants/Variants";
 
-export const TrendingPage = () => {
+const TrendingPage = () => {
   const [results, setResults] = useState([]);
+  const [error, setError] = useState(false);
   const modalData = useSelector(selectModalData);
   const pageRef = useRef(1);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,7 +55,7 @@ export const TrendingPage = () => {
         console.log(resp);
         setResults(resp);
       } catch (error) {
-        console.log(error);
+        setError(true);
       }
     };
     fetchTrend();
@@ -97,6 +98,9 @@ export const TrendingPage = () => {
             })}
           </motion.ul>
         ) : null}
+        {error ? <p className="text-white font-semibold text-2xl leading-normal mb-4 text-center">
+            Something went wrong, try reload the page...
+          </p> : null}
         {showLoadMore && (
           <button
             onClick={onClick}
@@ -109,3 +113,4 @@ export const TrendingPage = () => {
     </div>
   );
 };
+export default TrendingPage;

@@ -24,9 +24,9 @@ export const Card = ({ id, openModal }) => {
     fetch();
   }, []);
   const onClick = (e) => {
-    // if (e.target !== e.currentTarget) {
-    //   return;
-    // }
+    if (e.target !== e.currentTarget) {
+      return;
+    }
     if (openModal) {
       openModal(id);
       return;

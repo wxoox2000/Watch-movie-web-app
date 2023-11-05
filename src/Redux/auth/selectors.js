@@ -6,3 +6,4 @@ export const selectIsError = (state) => state.auth.isError;
 export const selectIsLoading = (state) => state.auth.isLoading;
 export const selectID = (state) => state.auth.id;
 export const selectSessionID = state => state.auth.token;
+export const selectAttempt = state => state.auth.attempt;

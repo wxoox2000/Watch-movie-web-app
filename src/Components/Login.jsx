@@ -2,18 +2,30 @@ import { Link } from "react-router-dom";
 import Coffee from "../assets/coffee.svg";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "../Redux/auth/operations";
-import { getData, getId } from "../Redux/auth/authSlice";
+import { tryLogin, getData, getId } from "../Redux/auth/authSlice";
 import { motion } from "framer-motion";
 import { formVariants, loginVariants } from "./FramerMotionVariants/Variants";
 import { FiCoffee } from "react-icons/fi";
+import {
+  selectAttempt,
+  selectIsError,
+  selectIsLoading,
+  selectIsRefreshing,
+} from "../Redux/auth/selectors";
+import { ToastContainer, toast } from "react-toastify";
 
 export const Login = () => {
   const [openForm, setOpenForm] = useState(false);
   const [tip, setTip] = useState(false);
   const dispatch = useDispatch();
+  const error = useSelector(selectIsError);
+  const loading = useSelector(selectIsRefreshing);
+  const attempt = useSelector(selectAttempt);
+  const showMessage = error && attempt && !loading;
+  console.log(showMessage);
   const onClick = () => {
     if (!openForm) {
       setOpenForm(true);
@@ -35,8 +47,24 @@ export const Login = () => {
       .max(50, "Too long")
       .required("Enter your password"),
   });
+  useEffect(() => {
+    if (showMessage) {
+      toast.warn("Please enter valid login and/or password", {
+        position: "top-center",
+        autoClose: 2000,
+        delay: 1000,
+        hideProgressBar: false,
+        icon: <FiCoffee />,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "dark",
+      });
+    }
+  }, [showMessage]);
   return (
     <div className="w-[1440px] mx-auto h-full absolute bg-black bg-bgModal bg-cover animate-inputPopUp z-20">
+      {showMessage && <ToastContainer limit={1} />}
       <motion.div
         className="absolute top-[calc(50%-160px)] left-[calc(50%-120px)] w-fit flex flex-col items-center"
         variants={loginVariants}
@@ -63,14 +91,20 @@ export const Login = () => {
                   dispatch(
                     logIn({ values, f: dispatchId, data: dispatchData })
                   );
+                  dispatch(tryLogin(true));
+                  setTimeout(() => {
+                    dispatch(tryLogin(false));
+                  }, 4000);
                 }
               : null
           }
         >
           <Form className="mb-4 flex flex-col gap-4 items-center relative">
             {openForm && (
-              <motion.div className="flex flex-col gap-4"
-              variants={formVariants}>
+              <motion.div
+                className="flex flex-col gap-4"
+                variants={formVariants}
+              >
                 <Field
                   className="h-10 rounded-xl w-56 outline-none px-2 py-2 bg-gray focus:bg-white trans text-black text-lg leading-5 font-semibold"
                   name="username"

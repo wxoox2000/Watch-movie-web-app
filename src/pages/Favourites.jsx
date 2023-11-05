@@ -19,7 +19,7 @@ import {
   listVariants,
 } from "../Components/FramerMotionVariants/Variants";
 
-export const Favourites = () => {
+const Favourites = () => {
   const favMovies = useSelector(selectFavMovies);
   const favSeries = useSelector(selectFavSeries);
   const accId = useSelector(selectID);
@@ -113,3 +113,5 @@ export const Favourites = () => {
     </div>
   );
 };
+
+export default Favourites;

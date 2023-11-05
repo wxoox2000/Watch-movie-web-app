@@ -38,7 +38,7 @@ export const LikeBtn = ({ M_Id, type, variant }) => {
     setMarked(favS.some((id) => id === M_Id));
   }, [favM, favS]);
   const onClick = () => {
-    if (!loggedIn) {
+    if (!loggedIn || !s_Id) {
       console.log("not logged");
       dispatch(notLogged());
       setTimeout(() => {

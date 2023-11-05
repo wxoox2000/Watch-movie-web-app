@@ -1,7 +1,5 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import { SharedLayout } from "./SharedLayout";
-import { Home } from "../pages/Home";
-import { LoginPage } from "../pages/LoginPage";
 import { RestrictedRoute } from "./RestrictedRoute";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,19 +8,19 @@ import {
   selectIsRefreshing,
 } from "../Redux/auth/selectors";
 import { refreshUser } from "../Redux/auth/operations";
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { fetchFavM, fetchFavS } from "../Redux/account/operations";
-import { PrivateRoute } from "./PrivateRoute";
-import { Favourites } from "../pages/Favourites";
-import { Search } from "../pages/Search";
 import { selectModalData } from "../Redux/selectors";
-import { TrendingPage } from "../pages/TrendingPage";
-import { ComingSoonPage } from "../pages/ComingSoonPage";
-import { Movies } from "../pages/Movies";
-import { Series } from "../pages/Series";
-import { Documentaries } from "../pages/Documentaries";
-import { Icon } from "../pages/Icon";
-import { AnimatePresence } from "framer-motion";
+import { Loader } from "./Loader";
+const Home = lazy(() =>import("../pages/Home"));
+const LoginPage = lazy(() => import("../pages/LoginPage"));
+const Favourites = lazy(() => import("../pages/Favourites"));
+const Search = lazy(() => import("../pages/Search"));
+const TrendingPage = lazy(() => import("../pages/TrendingPage"));
+const ComingSoonPage = lazy(() => import("../pages/ComingSoonPage"));
+const Movies = lazy(() => import("../pages/Movies"));
+const Series = lazy(() => import("../pages/Series"));
+const Documentaries = lazy(() => import("../pages/Documentaries"));
 
 function App() {
   const refresh = useSelector(selectIsRefreshing);
@@ -58,9 +56,8 @@ function App() {
   return (
     <>
       {refresh ? (
-        <p>Loading..</p>
+        <Loader />
       ) : (
-        <AnimatePresence>
           <Routes location={location} key={location.key}>
             <Route path="/" element={<SharedLayout />}>
               <Route index element={<Home />} />
@@ -79,7 +76,6 @@ function App() {
               <Route path="documentaries" element={<Documentaries />} />
             </Route>
           </Routes>
-        </AnimatePresence>
       )}
     </>
   );

@@ -21,14 +21,14 @@ import {
   selectUserName,
 } from "../Redux/auth/selectors";
 import { logOut } from "../Redux/auth/operations";
-import { defaultResults, revertToInit } from "../Redux/account/accSlice";
+import { revertToInit } from "../Redux/account/accSlice";
 import { motion } from "framer-motion";
 import { bgVariants, sideVariants } from "./FramerMotionVariants/Variants";
-import { Icon } from "../pages/Icon";
 import { selectNotLogged } from "../Redux/account/selectors";
 import { ToastContainer, toast } from "react-toastify";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
+import { Loader } from "./Loader";
 
 export const SharedLayout = () => {
   const loggedIn = useSelector(selectIsLoggedIn);
@@ -39,6 +39,8 @@ export const SharedLayout = () => {
   const addFavUnlogged = useSelector(selectNotLogged);
   const dispatch = useDispatch();
   const location = useLocation();
+
+  const logged = loggedIn && sessionId;
   console.log(location);
 
   const loggingOut = () => {
@@ -47,16 +49,18 @@ export const SharedLayout = () => {
   };
 
   useEffect(() => {
-    toast.warn("You must be logged in to add to favourites", {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      icon: <FiCoffee />,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      theme: "dark",
-    });
+    if (addFavUnlogged) {
+      toast.warn("You must be logged in to add to favourites", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        icon: <FiCoffee />,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "dark",
+      });
+    }
   }, [addFavUnlogged]);
 
   return (
@@ -137,7 +141,7 @@ export const SharedLayout = () => {
           </motion.aside>
         </div>
         <motion.div
-          className="w-full"
+          className="w-full h-full"
           variants={location.pathname === "/" ? bgVariants : null}
           initial={location.pathname === "/" ? "init" : ""}
           animate={location.pathname === "/" ? "visible" : ""}
@@ -184,7 +188,7 @@ export const SharedLayout = () => {
               <button>
                 <FiBell className="w-6 h-6 stroke-white" />
               </button>
-              {refresh ? null : loggedIn ? (
+              {refresh ? null : logged ? (
                 <div className="flex gap-2 items-center">
                   <div className="w-8 h-8 rounded-full bg-gray flex items-center justify-center overflow-hidden">
                     {avatar ? (
@@ -211,7 +215,9 @@ export const SharedLayout = () => {
               )}
             </div>
           </div>
-          <Outlet />
+          <Suspense fallback={<Loader />}>
+            <Outlet />
+          </Suspense>
         </motion.div>
       </div>
     </>

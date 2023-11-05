@@ -8,9 +8,9 @@ import { SeriesCard } from "../CardSeries";
 import { SeriesModal } from "../SeriesModal";
 import { Link } from "react-router-dom";
 
-
 export const TopRatedS = () => {
   const [topSeries, setTopSeries] = useState([]);
+  const [error, setError] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [id, setId] = useState(null);
   const modalRef = useRef();
@@ -46,7 +46,7 @@ export const TopRatedS = () => {
         const resp = await fetchTopSeries();
         setTopSeries(resp);
       } catch (error) {
-        console.log(error);
+        setError(true);
       }
     };
     fetchTopS();
@@ -69,22 +69,32 @@ export const TopRatedS = () => {
           count += 1;
           return (
             <SwiperSlide key={film.id}>
-              <SeriesCard id={film.id} openModal={modalOpen}/>
+              <SeriesCard id={film.id} openModal={modalOpen} />
             </SwiperSlide>
           );
         })}
         <SwiperSlide>
-          <Link to="top_rated_series" className="w-64 h-[301px] block shrink-0 hover:shadow-xlInn px-5 py-8 rounded-2xl border border-gray hover:shadow-shadowColor trans">
+          <Link
+            to="top_rated_series"
+            className="w-64 h-[301px] block shrink-0 hover:shadow-xlInn px-5 py-8 rounded-2xl border border-gray hover:shadow-shadowColor trans"
+          >
             <BsCameraReels className="mx-auto drop-shadow-2xl fill-purple w-20 h-20 mb-20" />
             <p className="text-white font-semibold text-3xl leading-normal mb-4 text-center">
               See more...
             </p>
           </Link>
         </SwiperSlide>
+        {error ? (
+          <SwiperSlide>
+            <p className="text-white font-semibold text-2xl leading-normal mb-4 text-center mt-24">
+              Something went wrong, try reload the page...
+            </p>
+          </SwiperSlide>
+        ) : null}
         <SlideNextButton ref={TopSeriesNavRef} />
         <SlidePrevButton ref={TopSeriesNavRef} />
       </Swiper>
-      {id && <SeriesModal id={id} closeModal={modalClose}/>}
+      {id && <SeriesModal id={id} closeModal={modalClose} />}
     </div>
   );
 };

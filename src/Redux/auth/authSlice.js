@@ -10,6 +10,7 @@ const initialState = {
   isError: false,
   isLoading: false,
   id: "",
+  attempt: false,
 };
 
 const authSlice = createSlice({
@@ -23,6 +24,9 @@ const authSlice = createSlice({
       state.userName = action.payload.username;
       state.id = action.payload.id;
       state.userAvatar = action.payload.avatar.tmdb.avatar_path;
+    },
+    tryLogin(state, action) {
+      state.attempt = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -49,10 +53,12 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.isRefreshing = false;
         state.isLoading = false;
+        state.attempt = false;
       })
       .addCase(refreshUser.rejected, (state) => {
         state.isRefreshing = false;
         state.isLoading = false;
+        state.isError = true;
       })
       .addCase(logOut.pending, (state) => {
         state.isLoading = true;
@@ -68,5 +74,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { getId, getData } = authSlice.actions;
+export const { getId, getData, tryLogin } = authSlice.actions;
 export const authReducer = authSlice.reducer;

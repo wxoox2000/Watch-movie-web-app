@@ -14,8 +14,9 @@ import {
   listVariants,
 } from "../Components/FramerMotionVariants/Variants";
 
-export const Documentaries = () => {
+const Documentaries = () => {
   const [results, setResults] = useState([]);
+  const [error, setError] = useState(false);
   const modalData = useSelector(selectModalData);
   const pageRef = useRef(1);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -57,7 +58,7 @@ export const Documentaries = () => {
         const resp = await fetchDocs(pageRef.current);
         setResults(resp);
       } catch (error) {
-        console.log(error);
+        setError(true);
       }
     };
     fetch();
@@ -105,6 +106,11 @@ export const Documentaries = () => {
             })}
           </motion.ul>
         ) : null}
+        {error ? (
+          <p className="text-white font-semibold text-2xl leading-normal mb-4 text-center">
+            Something went wrong, try reload the page...
+          </p>
+        ) : null}
         {showLoadMore && (
           <button
             onClick={onClick}
@@ -117,3 +123,5 @@ export const Documentaries = () => {
     </div>
   );
 };
+
+export default Documentaries;
