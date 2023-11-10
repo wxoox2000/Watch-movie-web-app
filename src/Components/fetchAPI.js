@@ -9,7 +9,6 @@ export const fetchTrendingMovies = async (page=1) => {
     key: APIKEY,
   };
   const resp = await axios.get(`/movie/popular?language=en-US&page=${page}`, options);
-  console.log(resp.data);
   return resp.data;
 };
 
@@ -21,7 +20,6 @@ export const fetchUpcomingMovies = async (page=1) => {
   `movie/upcoming?language=en-US&page=${page}`,
     options
   );
-  console.log(resp);
   return resp.data;
 };
 
@@ -68,7 +66,6 @@ export const fetchDocs = async (page=1) => {
     `discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=vote_average.desc&with_genres=99`,
     options
   );
-  console.log(resp.data);
   return resp.data;
 };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchById, fetchProviders } from "./fetchAPI";
-import { FiHeart, FiStar, FiX } from "react-icons/fi";
+import { FiStar, FiX } from "react-icons/fi";
 import { LikeBtn } from "./LikeBtn";
 import { useDispatch } from "react-redux";
 import { closingModal, modalDataToInit } from "../Redux/modalSlice";
@@ -10,7 +10,6 @@ export const FilmModal = ({ id, closeModal }) => {
   const [error, setError] = useState(false);
   const [watchUrl, setWatchUrl] = useState("");
   const dispatch = useDispatch();
-  //   const { id } = useParams();
   useEffect(() => {
     const fetchFilm = async (id) => {
       try {

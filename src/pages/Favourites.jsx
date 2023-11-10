@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Card } from "../Components/Card";
 import { FilmModal } from "../Components/FilmModal";
 import { createPortal } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectFavMovies, selectFavSeries } from "../Redux/account/selectors";
 import { BsCameraReels } from "react-icons/bs";
-import { openModal } from "../Redux/modalSlice";
 import { SeriesCard } from "../Components/CardSeries";
 import { selectID } from "../Redux/auth/selectors";
 import { fetchFavM, fetchFavS } from "../Redux/account/operations";
@@ -13,7 +12,7 @@ import { SeriesModal } from "../Components/SeriesModal";
 import { ListItem } from "../Components/ListItem";
 import { selectModalData } from "../Redux/selectors";
 import { BackdropModal } from "../Components/BackdropModal";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   exit,
   listVariants,

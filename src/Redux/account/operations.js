@@ -45,7 +45,6 @@ export const fetchFavS = createAsyncThunk(
 export const fetchBySearch = createAsyncThunk(
   "account/search",
   async (obj, thunkAPI) => {
-    console.log("fetch");
     try {
       const res = await userSearch(obj.query, obj.page);
       return res;

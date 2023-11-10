@@ -8,7 +8,7 @@ import {
   selectIsRefreshing,
 } from "../Redux/auth/selectors";
 import { refreshUser } from "../Redux/auth/operations";
-import { Suspense, lazy, useEffect } from "react";
+import { lazy, useEffect } from "react";
 import { fetchFavM, fetchFavS } from "../Redux/account/operations";
 import { selectModalData } from "../Redux/selectors";
 import { Loader } from "./Loader";

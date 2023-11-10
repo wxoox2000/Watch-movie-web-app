@@ -64,23 +64,6 @@ const strokeVariantsF = {
     },
   },
 };
-const contVariants = {
-  hidden: {
-    scale: 0,
-    opacity: 0.5,
-  },
-  visible: {
-    scale: [0, 1],
-    opacity: [0, 1],
-    transition: {
-      type: "spring",
-      duration: 3,
-      damping: 10,
-      stiffness: 140,
-      times: [0, 0.5, 1, 2, 3],
-    },
-  },
-};
 const svgVariants1 = {
   hidden: { opacity: 0, scale: 0 },
   visible: {

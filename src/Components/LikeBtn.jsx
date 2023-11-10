@@ -16,7 +16,8 @@ import {
   selectIsLoggedIn,
   selectSessionID,
 } from "../Redux/auth/selectors";
-import { fetchFavM, fetchFavS } from "../Redux/account/operations";
+import { addNotification } from "./notificationsApi";
+import { currentTime } from "./NotificationBuilder";
 
 export const LikeBtn = ({ M_Id, type, variant }) => {
   const [marked, setMarked] = useState(false);
@@ -38,8 +39,8 @@ export const LikeBtn = ({ M_Id, type, variant }) => {
     setMarked(favS.some((id) => id === M_Id));
   }, [favM, favS]);
   const onClick = () => {
+    const date = new Date();
     if (!loggedIn || !s_Id) {
-      console.log("not logged");
       dispatch(notLogged());
       setTimeout(() => {
         dispatch(notLoggedInit());
@@ -50,11 +51,30 @@ export const LikeBtn = ({ M_Id, type, variant }) => {
       markFavourite({ M_Id, mark: true, type, s_Id, accId });
       type === "movie" ? dispatch(addFavM(M_Id)) : dispatch(addFavS(M_Id));
       setMarked(true);
+      addNotification({
+        action: "add",
+        content: {
+          type,
+          id: M_Id,
+        },
+        createdAt: currentTime(),
+        timeStamp: date.getTime(),
+      });
       return;
     }
     markFavourite({ M_Id, mark: false, type, s_Id, accId });
     type === "movie" ? dispatch(removeFavM(M_Id)) : dispatch(removeFavS(M_Id));
     setMarked(false);
+    addNotification({
+      action: "remove",
+      content: {
+        type,
+        id: M_Id,
+      },
+      createdAt: currentTime(),
+      timeStamp: date.getTime()
+    });
+
   };
   return (
     <>

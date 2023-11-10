@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
 import { useSwiper } from "swiper/react";
 

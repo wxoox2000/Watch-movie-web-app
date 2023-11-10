@@ -12,7 +12,6 @@ export const login = createAsyncThunk('auth/login', async (creds, thunkAPI) => {
       };
     try {
         const resp = await axios.post("authentication/token/validate_with_login", options);
-        console.log(resp.data);
     } catch (error) {
         return thunkAPI.rejectWithValue(error.message)
     }

@@ -14,7 +14,6 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
   selectAvatar,
-  selectID,
   selectIsLoggedIn,
   selectIsRefreshing,
   selectSessionID,
@@ -26,9 +25,12 @@ import { motion } from "framer-motion";
 import { bgVariants, sideVariants } from "./FramerMotionVariants/Variants";
 import { selectNotLogged } from "../Redux/account/selectors";
 import { ToastContainer, toast } from "react-toastify";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { Loader } from "./Loader";
+import NotificationsPanel from "./NotificationsPanel";
+import { addNotification } from "./notificationsApi";
+import { currentTime } from "./NotificationBuilder";
 
 export const SharedLayout = () => {
   const loggedIn = useSelector(selectIsLoggedIn);
@@ -39,13 +41,33 @@ export const SharedLayout = () => {
   const addFavUnlogged = useSelector(selectNotLogged);
   const dispatch = useDispatch();
   const location = useLocation();
+  const [notesOpen, setNotesOpen] = useState(false);
+  const [notesClosing, setNotesClosing] = useState(false);
 
   const logged = loggedIn && sessionId;
-  console.log(location);
 
   const loggingOut = () => {
     dispatch(logOut(sessionId));
     dispatch(revertToInit());
+    const date = new Date();
+    addNotification({
+      action: "logout",
+      content: {},
+      createdAt: currentTime(),
+      timeStamp: date.getTime(),
+    });
+
+  };
+  const notesHandler = () => {
+    if (notesOpen) {
+      setNotesClosing(true);
+      setTimeout(() => {
+        setNotesClosing(false);
+        setNotesOpen(false);
+      }, 700);
+      return;
+    }
+    setNotesOpen(true);
   };
 
   useEffect(() => {
@@ -63,10 +85,25 @@ export const SharedLayout = () => {
     }
   }, [addFavUnlogged]);
 
+  const toastId = "notes";
+  const toastN = () => {
+    toast.warn("You must be logged to see your notifications", {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      icon: <FiCoffee />,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      theme: "dark",
+      ToastId: toastId,
+    });
+  };
+
   return (
     <>
       <div className="w-full flex relative">
-        {addFavUnlogged && <ToastContainer limit={1} />}
+        {addFavUnlogged && <ToastContainer limit={1}/>}
         <div className="w-[274px] shrink-0">
           <motion.aside
             className="w-[274px] bg-black shadow-xl shadow-shadowColor h-screen p-10 fixed"
@@ -172,7 +209,7 @@ export const SharedLayout = () => {
                 </li>
               </ul>
             </nav>
-            <div className="flex gap-6 items-center">
+            <div className="relative flex gap-6 items-center">
               <div className="relative w-52 h-8">
                 <Link
                   to="search"
@@ -185,9 +222,11 @@ export const SharedLayout = () => {
                   />
                 </Link>
               </div>
-              <button>
-                <FiBell className="w-6 h-6 stroke-white" />
+              <button className="group" onClick={loggedIn ? notesHandler : toastN}>
+                <FiBell className="w-6 h-6 stroke-white group-hover:stroke-blue trans" />
               </button>
+              {notesOpen && <NotificationsPanel closing={notesClosing} />}
+              <ToastContainer />
               {refresh ? null : logged ? (
                 <div className="flex gap-2 items-center">
                   <div className="w-8 h-8 rounded-full bg-gray flex items-center justify-center overflow-hidden">

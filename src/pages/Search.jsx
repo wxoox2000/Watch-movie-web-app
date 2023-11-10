@@ -13,10 +13,8 @@ import { SeriesModal } from "../Components/SeriesModal";
 import { selectModalData } from "../Redux/selectors";
 import { motion } from "framer-motion";
 import {
-  bgVariants,
   exit,
   listVariants,
-  mainVariants,
 } from "../Components/FramerMotionVariants/Variants";
 
 const Search = () => {
@@ -46,21 +44,17 @@ const Search = () => {
       form.elements.search.value.trim() === "" ||
       form.elements.search.value === query
     ) {
-      console.log("empty");
       return;
     }
     setSearchParams({ query: form.elements.search.value, page: 1 });
     setQuery(form.elements.search.value);
-    // navigate(`search?query=${form.elements.search.value}&page=1`)
   };
 
   const onClick = () => {
-    console.log(pageRef.current);
     pageRef.current += 1;
     setSearchParams({ query: URLquery, page: pageRef.current });
     const fetch = async () => {
       const res = await userSearch(query, pageRef.current);
-      console.log(res);
       setResults({ ...results, results: [...results.results, ...res.results] });
     };
     fetch();
@@ -70,7 +64,6 @@ const Search = () => {
     setSearchParams({ query: URLquery, page: pageRef.current });
     const fetch = async () => {
       const res = await fetchTrendingMovies(pageRef.current);
-      console.log(res);
       setResults({ ...results, results: [...results.results, ...res.results] });
     };
     fetch();

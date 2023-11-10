@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { data } from "autoprefixer";
+import { addNotification } from "../../Components/notificationsApi";
+import { currentTime } from "../../Components/NotificationBuilder";
 
 axios.defaults.baseURL = "https://api.themoviedb.org/3/";
 axios.defaults.headers.common.Authorization =
@@ -14,7 +15,6 @@ export const logIn = createAsyncThunk("auth/login", async (obj, thunkAPI) => {
     };
     (async function () {
       const res = await axios.get("/authentication/token/new", options);
-      console.log(res.data);
       return res.data;
     })()
       .then(async (data) => {
@@ -22,7 +22,6 @@ export const logIn = createAsyncThunk("auth/login", async (obj, thunkAPI) => {
           "/authentication/token/validate_with_login",
           { ...obj.values, request_token: data.request_token }
         );
-        console.log(res.data);
         return res.data;
       })
       .then(async (data) => {
@@ -30,18 +29,23 @@ export const logIn = createAsyncThunk("auth/login", async (obj, thunkAPI) => {
           request_token: data.request_token,
         });
         obj.f(res.data.session_id);
-        console.log(res.data);
         return res.data;
-      }).then(async data => {
+      })
+      .then(async (data) => {
         const res = await axios.get(
           `/account/&session_id=${data.session_id}}`,
           options
         );
         obj.data(res.data);
-  
-      })
+        const date = new Date();
+        addNotification({
+          action: "login",
+          content: {},
+          createdAt: currentTime(),
+          timeStamp: date.getTime(),
+        });
+      });
   } catch (error) {
-    console.log(error.message);
     return thunkAPI.rejectWithValue(error.message);
   }
 });

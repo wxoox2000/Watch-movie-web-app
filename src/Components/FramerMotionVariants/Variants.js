@@ -131,4 +131,40 @@ export const HoverAnim = {
   },
 };
 
+export const NotifyVariants = {
+  init: {
+    opacity: 0.4,
+    y: "-100vh",
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      damping: 12,
+      stiffness: 140,
+      mass: 0.9,
+      duration: 0.7,
+    },
+  },
+};
+export const NotifModalVariants = {
+  init: {
+    opacity: 0,
+    x: "340px",
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: "spring",
+      duration: 0.7,
+      damping: 12,
+      stiffness: 120,
+      mass: 1,
+    },
+  },
+};
+
+
 export const exit = { opacity: 0, transition: { duration: 0.4 } };

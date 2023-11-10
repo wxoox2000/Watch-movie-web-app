@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchProvidersSeries, fetchSeriesById } from "./fetchAPI";
-import { FiHeart, FiStar, FiX } from "react-icons/fi";
+import { FiStar, FiX } from "react-icons/fi";
 import { LikeBtn } from "./LikeBtn";
 import { closingModal, modalDataToInit } from "../Redux/modalSlice";
 import { useDispatch } from "react-redux";

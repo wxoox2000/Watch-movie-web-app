@@ -1,8 +1,6 @@
-import { FiHeart } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { fetchSeriesById } from "./fetchAPI";
 import { LikeBtn } from "./LikeBtn";
-import { Link } from "react-router-dom";
 import { CircleLoader } from "react-spinners";
 import { motion } from "framer-motion";
 import { HoverAnim } from "./FramerMotionVariants/Variants";
@@ -15,7 +13,7 @@ export const SeriesCard = ({ id, openModal }) => {
         const resp = await fetchSeriesById(id);
         setData(resp);
       } catch (error) {
-        console.log(error);
+        return error;    
       }
     };
     fetch();

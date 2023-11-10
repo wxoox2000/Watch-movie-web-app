@@ -34,9 +34,7 @@ const Movies = () => {
     pageRef.current += 1;
     setSearchParams({ page: pageRef.current });
     const fetch = async () => {
-      console.log(pageRef.current);
       const res = await fetchTopFilms(pageRef.current);
-      console.log(res);
       setResults({ ...results, results: [...results.results, ...res.results] });
     };
     fetch();
@@ -46,7 +44,6 @@ const Movies = () => {
     setSearchParams({ page: pageRef.current });
     const fetch = async () => {
       const res = await fetchTrendingMovies(pageRef.current);
-      console.log(res);
       setResults({ ...results, results: [...results.results, ...res.results] });
     };
     fetch();
@@ -56,7 +53,6 @@ const Movies = () => {
     const fetchTrend = async () => {
       try {
         const resp = await fetchTopFilms(pageRef.current);
-        console.log(resp);
         setResults(resp);
       } catch (error) {
         setError(true);

@@ -3,13 +3,14 @@ import { selectModalData } from "../Redux/selectors";
 import { closingModal, modalDataToInit } from "../Redux/modalSlice";
 import { useEffect } from "react";
 
-export const BackdropModal = ({children}) => {
+export const BackdropModal = ({children, close}) => {
     const modalData = useSelector(selectModalData);
     const dispatch = useDispatch();
     const closeFav = () => {
       dispatch(closingModal())
       setTimeout(() => {
         dispatch(modalDataToInit());
+        close && close()
       }, 700);
     };
     const escClose = (e) => {

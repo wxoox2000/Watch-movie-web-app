@@ -1,4 +1,4 @@
-import { ClipLoader, FadeLoader } from "react-spinners";
+import { FadeLoader } from "react-spinners";
 
 export const Loader = () => {
   return (

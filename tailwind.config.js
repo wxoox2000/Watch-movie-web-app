@@ -8,6 +8,8 @@ export default {
       gray: "#969696",
       white: "#ffffff",
       black: "#21201E",
+      green: "#1fdc8c",
+      red: "#ed2474",
       shadowColor: "rgba(97, 0, 194, 0.40)",
       transparent: "transparent",
     },

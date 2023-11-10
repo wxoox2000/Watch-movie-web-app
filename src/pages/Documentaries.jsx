@@ -33,9 +33,7 @@ const Documentaries = () => {
     pageRef.current += 1;
     setSearchParams({ page: pageRef.current });
     const fetch = async () => {
-      console.log(pageRef.current);
       const res = await fetchDocs(pageRef.current);
-      console.log(res);
       setResults({ ...results, results: [...results.results, ...res.results] });
     };
     fetch();
@@ -46,7 +44,6 @@ const Documentaries = () => {
     setSearchParams({ page: pageRef.current });
     const fetch = async () => {
       const res = await fetchTrendingMovies(pageRef.current);
-      console.log(res);
       setResults({ ...results, results: [...results.results, ...res.results] });
     };
     fetch();

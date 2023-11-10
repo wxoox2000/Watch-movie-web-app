@@ -12,7 +12,6 @@ import { FiCoffee } from "react-icons/fi";
 import {
   selectAttempt,
   selectIsError,
-  selectIsLoading,
   selectIsRefreshing,
 } from "../Redux/auth/selectors";
 import { ToastContainer, toast } from "react-toastify";
@@ -25,7 +24,6 @@ export const Login = () => {
   const loading = useSelector(selectIsRefreshing);
   const attempt = useSelector(selectAttempt);
   const showMessage = error && attempt && !loading;
-  console.log(showMessage);
   const onClick = () => {
     if (!openForm) {
       setOpenForm(true);

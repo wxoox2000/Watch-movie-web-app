@@ -1,8 +1,6 @@
-import { FiHeart } from "react-icons/fi";
 import { useEffect, useRef, useState } from "react";
 import { fetchById } from "./fetchAPI";
-import { Link, useLocation } from "react-router-dom";
-import { FilmModal } from "./FilmModal";
+import { useLocation } from "react-router-dom";
 import { LikeBtn } from "./LikeBtn";
 import { CircleLoader } from "react-spinners";
 import { motion } from "framer-motion";
@@ -18,7 +16,7 @@ export const Card = ({ id, openModal }) => {
         const resp = await fetchById(id);
         setData(resp);
       } catch (error) {
-        console.log(error);
+        return error
       }
     };
     fetch();
